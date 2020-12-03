@@ -1,15 +1,10 @@
 // AWS variables
-/*
-variable "aws_credentials" {
-  default = "$HOME/.aws/credentials"
-}
-*/
 
 variable "aws_access_key" {} 
 
 variable "aws_secret_key" {} 
 
-variable "aws_role_arn" {} 
+//variable "aws_role_arn" {} 
   
 variable "aws_region" {
   default = "ca-central-1"

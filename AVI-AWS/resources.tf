@@ -36,7 +36,7 @@ resource "avi_cloud" "aws_cloud" {
       region = var.aws_region
       secret_access_key = var.aws_secret_key
       access_key_id = var.aws_access_key
-      iam_assume_role = var.aws_role_arn
+      //iam_assume_role = var.aws_role_arn
       route53_integration = false
       s3_encryption {}
       zones {
