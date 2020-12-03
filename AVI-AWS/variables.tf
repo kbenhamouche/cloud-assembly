@@ -3,13 +3,13 @@
 variable "aws_credentials" {
   default = "$HOME/.aws/credentials"
 }
+*/
 
 variable "aws_access_key" {} 
 
 variable "aws_secret_key" {} 
 
 variable "aws_role_arn" {} 
-*/
   
 variable "aws_region" {
   default = "ca-central-1"
@@ -73,6 +73,11 @@ variable "avi_tenant" {
 
 variable "aws_cloud_name" {
   default = "AWS-vRA"
+}
+
+variable "aws_private_sn" {
+  description = "Enter the private subnet (example: 172.16.100.0/24)"
+  default = "172.36.100.0"
 }
 
 variable "aws_pool" {

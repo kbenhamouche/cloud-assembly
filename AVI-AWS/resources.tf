@@ -36,7 +36,7 @@ resource "avi_cloud" "aws_cloud" {
       region = var.aws_region
       secret_access_key = var.aws_secret_key
       access_key_id = var.aws_access_key
-      //iam_assume_role = var.aws_role_arn
+      iam_assume_role = var.aws_role_arn
       route53_integration = false
       s3_encryption {}
       zones {
@@ -76,7 +76,6 @@ resource "avi_pool" "aws_http_pool" {
 // 2- Define the VIP@
 
 resource "avi_vsvip" "aws_vsvip" {
-    depends_on = [aws_instance.aws_velo-instance]
     name = var.aws_vs_name
     cloud_ref = avi_cloud.aws_cloud.id
     vip {
@@ -85,7 +84,7 @@ resource "avi_vsvip" "aws_vsvip" {
         subnet_uuid = data.aws_subnet.aws_vcn-private-sn.id
         subnet {
             ip_addr {
-                addr = data.aws_subnet.aws_vcn-private-sn.cidr_block
+                addr = var.aws_private_sn
                 type = "V4"
             }
             mask = "24"
@@ -94,4 +93,23 @@ resource "avi_vsvip" "aws_vsvip" {
     dns_info {
       fqdn = var.aws_domain_name
     }
+}
+
+resource "avi_virtualservice" "http_aws_vs" {
+   name = var.aws_vs_name
+   cloud_ref = avi_cloud.aws_cloud.id
+   vsvip_ref = avi_vsvip.aws_vsvip.id
+   pool_ref = avi_pool.aws_http_pool.id
+   application_profile_ref = data.avi_applicationprofile.system_http.id
+   network_profile_ref = data.avi_networkprofile.system_tcp_proxy.id
+   services {
+      port = 80
+      enable_ssl = false
+   }
+   analytics_policy {
+    metrics_realtime_update {
+      enabled  = true
+      duration = 0
+    }
+  }
 }
